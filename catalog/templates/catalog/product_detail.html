@@ -10,6 +10,9 @@
                 <img src="{{ product.image | media_filter }}" class="card-img-top" alt="product.name">
                 <p class="card-text">{{ object.description }}</p>
                 <a href="#" class="btn btn-primary">Купить</a>
+                <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Список товаров</a>
+                <a href="{% url 'catalog:product_update' product.id %}" class="btn btn-secondary">Редактировать товар</a>
+                <a href="{% url 'catalog:product_delete' product.id %}" class="btn btn-danger">Удалить товар</a>
             </div>
         </div>
   </div>

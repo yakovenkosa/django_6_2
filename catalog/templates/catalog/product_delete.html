@@ -1,0 +1,13 @@
+{% extends 'catalog/home.html'%}
+{% block title %}Удаление продукта{% endblock %}
+{% include 'catalog/includes/inc_menu.html'%}
+{% block content %}
+<h2>Удаление продукта</h2>
+<p>Вы действительно хотите удалить {{ object.name }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Подтвердить</button>
+    <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
+{% include 'catalog/includes/footer.html'%}
