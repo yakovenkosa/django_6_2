@@ -1,0 +1,10 @@
+{% extends 'catalog/home.html'%}
+{% block title %}Войти{% endblock %}
+{% block content %}
+<h2>Войти</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn bth-primary">Войти</button>
+</form>>
+{% endblock %}
