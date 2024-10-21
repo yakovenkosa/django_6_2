@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
 from django.urls import reverse_lazy
 from catalog.forms import ProductForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class ProductListViews(ListView):
@@ -30,14 +31,14 @@ class CatalogContactsView(View):
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_create.html'
     success_url = reverse_lazy('catalog:product_list')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_create.html'
