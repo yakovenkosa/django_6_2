@@ -1,9 +1,10 @@
 from django.db import models
+from users.models import CustomUser
 
 
 class Category(models.Model):
-
-    name = models.CharField(max_length=100, verbose_name="Наименование категории", help_text="Введите наименование категории")
+    name = models.CharField(max_length=100, verbose_name="Наименование категории",
+                            help_text="Введите наименование категории")
     description = models.CharField(max_length=150, verbose_name="Описание категории", help_text="Опишите категорию")
 
     def __str__(self):
@@ -19,10 +20,14 @@ class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name="Наименование продукта")
     description = models.CharField(max_length=150, verbose_name="Описание продукта")
     image = models.ImageField(upload_to='images/', blank=True, null=True, verbose_name="Изображение")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, verbose_name="Категория продукта", related_name="products")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, verbose_name="Категория продукта",
+                                 related_name="products")
     price = models.IntegerField(verbose_name="Цена продукта")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+    publication_status = models.BooleanField(default=False)
+    owner = models.ForeignKey(CustomUser, verbose_name="Владелец продукта", blank=True, null=True,
+                              on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"{self.name} {self.description} {self.category}"
@@ -31,3 +36,16 @@ class Product(models.Model):
         verbose_name = "продукт"
         verbose_name_plural = "продукты"
         ordering = ["name"]
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product")
+        ]
+
+
+class StyleFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for fild_name, fild in self.fields.items():
+            if isinstance(fild, BooleanField):
+                fild.widget.attrs["class"] = "form-check-input"
+            else:
+                fild.widget.attrs["class"] = "form-control"
