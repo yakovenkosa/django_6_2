@@ -1,7 +1,7 @@
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from catalog.models import Product
+from catalog.models import Product, StyleFormMixin
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
@@ -61,7 +61,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         raise PermissionDenied
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(StyleFormMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_delete.html'
     success_url = reverse_lazy('catalog:product_list')
