@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 
-from catalog.models import StyleFormMixin
+from catalog.forms import StyleFormMixin
 from .models import CustomUser
 from django import forms
 
