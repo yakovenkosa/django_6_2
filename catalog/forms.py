@@ -7,7 +7,10 @@ class ProductForm(forms.ModelForm):
     """Форма модели продукта"""
     class Meta:
         model = Product
-        fields = "__all__"
+        exclude = (
+            "owner",
+            "publication_status",
+        )
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
@@ -63,3 +66,20 @@ class ProductForm(forms.ModelForm):
             raise forms.ValidationError('Цена продукта не может быть отрицательной.')
 
         return price
+
+
+class ProductModeratorForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ["publication_status"]
+
+
+
+class StyleFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for fild_name, fild in self.fields.items():
+            if isinstance(fild, BooleanField):
+                fild.widget.attrs["class"] = "form-check-input"
+            else:
+                fild.widget.attrs["class"] = "form-control"
